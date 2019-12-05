@@ -1,0 +1,33 @@
+
+import discord
+import os
+from discord.ext import commands
+
+token = os.getenv('DISCORD_TOKEN')
+default_emojis = [
+    "👍",
+    "👎"
+]
+
+bot = commands.Bot(command_prefix='?')
+poll_channel = bot.get_channel("651935041022066718")
+
+@bot.event
+async def on_ready():
+    print(f'{bot.user.name} has connected to Discord!')
+
+async def react(message):
+    for emoji in default_emojis:
+        await message.add_reaction(emoji)
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if (message.channel.id == 651935041022066718):
+        if ("suggestion" in message.content.lower()):
+            await react(message)
+        else:
+            await message.delete()
+
+bot.run("NjUxOTM5MTQ4MDI1OTU0MzA1.XehQjw.wFZ-m89WVcdrHf5Ww8WRACx51s8")
